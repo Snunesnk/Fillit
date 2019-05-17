@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/17 17:59:28 by snunes           ###   ########.fr        #
+#    Updated: 2019/05/17 19:25:20 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC_NAME = ft_putchar.c ft_putstr.c ft_putchar_fd.c ft_putstr_fd.c ft_isdigit.c 
 		ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strtrim.c ft_memchr.c \
 		ft_memcmp.c ft_isspace.c ft_strncmp.c ft_isupcase.c ft_strjoin_free.c \
 		ft_strndup.c ft_strjoin_fclr.c ft_abs.c ft_islowcase.c get_next_line.c \
-		ft_lst_length.c
+		ft_lst_length.c ft_sqrt.c
 OBJ_PATH = obj
 I_PATH = include
 HEADER_NAME = libft.h

@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 18:42:02 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/17 20:13:31 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,27 @@
 // verifie que chaque bloc possede un cote commun avec un autre bloc
 int		check_place(char tab[5][5], int y, int x, int block)
 {
+	int contact;
+
+	contact = 0;
 	// verifie qu'il n'y ait pas plus de 4 blocs
 	if (block > 4)
 		return (EXIT_FAIL);
 	//check si il y a un bloc en haut
 	if (y - 1 >= 0 && tab[y - 1][x] == '#')
-		return (EXIT_SUCCESS);
+		++contact;
 	//check si il y a un bloc a gauche
 	if (x - 1 >= 0 && tab[y][x - 1] == '#')
-		return (EXIT_SUCCESS);
+		++contact;
 	//check si il y a un bloc a droite
 	if (x + 1 < 4 && tab[y][x + 1] == '#')
-		return (EXIT_SUCCESS);
-	//si aucun cote en commun avec un autre bloc
-	return (EXIT_FAIL);
+		++contact;
+	// check block en bas
+	if (y + 1 < 4 && tab[y + 1][x] == '#')
+		++contact;
+	if (contact == 0 || (block == 2 && contact < 2))
+		return (EXIT_FAIL);
+	return (EXIT_SUCCESS);
 }
 
 // verifie que chaque piece recue soit valide
