@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 20:23:45 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/17 23:03:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int		main(int argc, char **argv)
 {
 	int		fd;
 	t_list	lst;
-	t_list	*first;
 	int		state;
 
 	state = 0; // temporarire, le temps de faire un fillit
@@ -50,7 +49,6 @@ int		main(int argc, char **argv)
 		write(1, "usage: ./fillit Tetriminos_file\n", 33);
 		return (0);
 	}
-	*first = lst;
 	// protection en cas d'argument null
 	if (!argv[1])
 		return (ft_error());
@@ -59,19 +57,25 @@ int		main(int argc, char **argv)
  	fd = open(argv[1], O_RDONLY);
 	// test du fichier passe et stockage des pieces dans la liste
 	if (check_file(fd, &lst) == EXIT_FAIL)
-		state++; //return(ft_error());
+		return(ft_error());
 	close(fd);
-	while (first->next)
+	/*while (lst.next)
 	{
 		fd = 0;
-		while (((t_piece*)(lst.content))->tab[fd])
+		while (fd < 5)
 		{
 			printf("%s\n", ((t_piece*)(lst.content))->tab[fd]);
 			fd++;
 		}
 		lst = *lst.next;
 	}
-	// state = ft_fillit(first);
+	fd = 0;*/
+	while (fd < 5)
+	{
+		printf("%s\n", ((t_piece*)(lst.content))->tab[fd]);
+		fd++;
+	}
+	state = ft_fillit(&lst);
 	// si on arrive jusque la on peut etre content
 	return ((state == -1) ? ft_error() : 0);
 }

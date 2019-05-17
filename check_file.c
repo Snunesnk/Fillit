@@ -6,21 +6,19 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 20:13:31 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/17 23:05:26 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
 // verifie que chaque bloc possede un cote commun avec un autre bloc
-int		check_place(char tab[5][5], int y, int x, int block)
+int		count_contact(char tab[5][5], int y, int x)
 {
 	int contact;
 
 	contact = 0;
 	// verifie qu'il n'y ait pas plus de 4 blocs
-	if (block > 4)
-		return (EXIT_FAIL);
 	//check si il y a un bloc en haut
 	if (y - 1 >= 0 && tab[y - 1][x] == '#')
 		++contact;
@@ -33,9 +31,7 @@ int		check_place(char tab[5][5], int y, int x, int block)
 	// check block en bas
 	if (y + 1 < 4 && tab[y + 1][x] == '#')
 		++contact;
-	if (contact == 0 || (block == 2 && contact < 2))
-		return (EXIT_FAIL);
-	return (EXIT_SUCCESS);
+	return (contact);
 }
 
 // verifie que chaque piece recue soit valide
@@ -47,7 +43,9 @@ int	check_piece(t_piece *piece)
 	int y;
 	// position sur cette ligne
 	int x;
+	int contact;
 
+	contact = 0;
 	block = 0;
 	y = 0;
 	// tant que l'on a pas parcourue toutes les lignes de la piece
@@ -62,8 +60,7 @@ int	check_piece(t_piece *piece)
 				++block;
 				// on ne checke qu'a partir du deuxieme block trouve,
 				//sinon il n'y aura aucun cote commun pour le premier
-				if (block > 1 && check_place(piece->tab, y, x, block) == -1)
-					return (EXIT_FAIL);
+				contact = contact + count_contact(piece->tab, y, x);
 			}
 			// si le caractere lu n'est ni un '#' ni un '.'
 			else if (piece->tab[y][x] != '.')
@@ -72,6 +69,9 @@ int	check_piece(t_piece *piece)
 		}
 		++y;
 	}
+	//printf("contact total = %d\n", contact);
+	if (contact != 6 && contact != 8)
+		return (EXIT_FAIL);
 	if (block == 0)
 		return (EXIT_SUCCESS);
 	return (block == 4 ? EXIT_SUCCESS : EXIT_FAIL);
@@ -83,10 +83,8 @@ int	check_file(int fd, t_list *list)
 	char	*line;
 	int		i;
 	int		state;
-	int		tetri;
 	t_list	*lst;
 
-	tetri = 1;
 	line = NULL;
 	i = 0;
 	lst = list;
@@ -100,16 +98,15 @@ int	check_file(int fd, t_list *list)
 		// donc on evite les fuites
 		free(line);
 		// si la ligne lue ne contient pas 4 caractere et que ce n'est pas une transition
-		if (ft_strlen(((t_piece*)((lst)->content))->tab[i]) != 4 && *((t_piece*)((lst)->content))->tab[i])
+		if (ft_strlen(((t_piece*)((lst)->content))->tab[i]) != 4 && ((t_piece*)((lst)->content))->tab[i][0])
 			return (EXIT_FAIL);
 		// Si la ligne est vide, c'est surement une transition => '\n' entre deux pieces
-		if (!(*((t_piece*)((lst)->content))->tab[i]))
+		if (!(((t_piece*)((lst)->content))->tab[i][0]))
 		{
-			tetri++;
 			// Si transition, on a lu une piece complete, donc on la verifie
 			// Si ce n'est pas une transition mais une ligne vide dans le piece,
 			// la fonction le detectera.
-			if (check_piece((lst)->content) == EXIT_FAIL)
+			if (check_piece((t_piece*)(lst->content)) == EXIT_FAIL)
 				return (EXIT_FAIL);
 			// c'est bien une transition entre deux pieces, donc on ajoute un maillon
 			// dans la liste qui va stocker la piece suivante

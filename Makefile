@@ -6,14 +6,14 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/17 20:12:59 by snunes           ###   ########.fr        #
+#    Updated: 2019/05/17 23:04:59 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = fillit
 SRC_PATH = .
-SRC_NAME = main.c check_file.c
+SRC_NAME = main.c check_file.c fillit.c valid_place.c
 OBJ_PATH = obj
 I_PATH = include
 HEADER_NAME = fillit.h
@@ -29,6 +29,7 @@ HEADER = $(addprefix $(I_PATH)/,$(HEADER_NAME))
 
 ## all		: compile et cree l'executable
 all : $(NAME)
+	@cd libft && make
 
 $(NAME) : $(OBJ)
 	$(CC) $(CCFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
