@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:10 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 22:35:09 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/18 21:57:17 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@
 // PENSER A ENLEVER
 
 # define ABS(x) x > 0 ? x : -x
-# define EXIT_SUCCESS 0
-# define EXIT_FAIL -1
 
+void	print_map(char **map);
 int		find_space(char **map, t_piece *piece, int try);
 int		check_file(int fd, t_list *lst);
 t_piece	*new_piece(void);

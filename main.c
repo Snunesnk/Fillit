@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 23:03:05 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/18 23:21:33 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,22 @@ t_piece	*new_piece(void)
 	return (new_piece);
 }
 
+void	print_piece(t_list *lst)
+{
+	int i;
+
+	while (lst)
+	{
+		i = 0;
+		while (i < 5)
+		{
+			printf("|%s|\n", ((t_piece*)(lst->content))->tab[i]);
+			i++;
+		}
+		lst = lst->next;
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	int		fd;
@@ -56,25 +72,9 @@ int		main(int argc, char **argv)
 		return (ft_error());
  	fd = open(argv[1], O_RDONLY);
 	// test du fichier passe et stockage des pieces dans la liste
-	if (check_file(fd, &lst) == EXIT_FAIL)
+	if (check_file(fd, &lst) == EXIT_FAILURE)
 		return(ft_error());
 	close(fd);
-	/*while (lst.next)
-	{
-		fd = 0;
-		while (fd < 5)
-		{
-			printf("%s\n", ((t_piece*)(lst.content))->tab[fd]);
-			fd++;
-		}
-		lst = *lst.next;
-	}
-	fd = 0;*/
-	while (fd < 5)
-	{
-		printf("%s\n", ((t_piece*)(lst.content))->tab[fd]);
-		fd++;
-	}
 	state = ft_fillit(&lst);
 	// si on arrive jusque la on peut etre content
 	return ((state == -1) ? ft_error() : 0);

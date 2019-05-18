@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 17:57:35 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 18:00:32 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/18 14:31:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_lst_length(t_list *lst)
 	int i;
 
 	i = 0;
-	while (lst->next)
+	while (lst)
 	{
 		i++;
 		lst = lst->next;

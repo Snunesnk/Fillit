@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 23:05:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/18 21:44:05 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int	check_piece(t_piece *piece)
 
 	contact = 0;
 	block = 0;
-	y = 0;
+	y = -1;
 	// tant que l'on a pas parcourue toutes les lignes de la piece
-	while (y < 4)
+	while (y++ < 3)
 	{
-		x = 0;
+		x = -1;
 		// tant que l'on a pas atteint le bout de la ligne
-		while (x < 4)
+		while (x++ < 3)
 		{
 			if (piece->tab[y][x] == '#') //si on trouve un '#'
 			{
@@ -64,17 +64,15 @@ int	check_piece(t_piece *piece)
 			}
 			// si le caractere lu n'est ni un '#' ni un '.'
 			else if (piece->tab[y][x] != '.')
-				return(EXIT_FAIL);
-			++x;
+				return(EXIT_FAILURE);
 		}
-		++y;
 	}
 	//printf("contact total = %d\n", contact);
 	if (contact != 6 && contact != 8)
-		return (EXIT_FAIL);
+		return (EXIT_FAILURE);
 	if (block == 0)
 		return (EXIT_SUCCESS);
-	return (block == 4 ? EXIT_SUCCESS : EXIT_FAIL);
+	return (block == 4 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
 int	check_file(int fd, t_list *list)
@@ -99,19 +97,19 @@ int	check_file(int fd, t_list *list)
 		free(line);
 		// si la ligne lue ne contient pas 4 caractere et que ce n'est pas une transition
 		if (ft_strlen(((t_piece*)((lst)->content))->tab[i]) != 4 && ((t_piece*)((lst)->content))->tab[i][0])
-			return (EXIT_FAIL);
+			return (EXIT_FAILURE);
 		// Si la ligne est vide, c'est surement une transition => '\n' entre deux pieces
 		if (!(((t_piece*)((lst)->content))->tab[i][0]))
 		{
 			// Si transition, on a lu une piece complete, donc on la verifie
 			// Si ce n'est pas une transition mais une ligne vide dans le piece,
 			// la fonction le detectera.
-			if (check_piece((t_piece*)(lst->content)) == EXIT_FAIL)
-				return (EXIT_FAIL);
+			if (check_piece((t_piece*)(lst->content)) == EXIT_FAILURE)
+				return (EXIT_FAILURE);
 			// c'est bien une transition entre deux pieces, donc on ajoute un maillon
 			// dans la liste qui va stocker la piece suivante
 			if(!((lst)->next = ft_lstnew(new_piece(), sizeof(t_piece))))
-				return (EXIT_FAIL);
+				return (EXIT_FAILURE);
 			//on avance dans la liste
 			lst = (lst)->next;
 			i = -1;
@@ -120,10 +118,10 @@ int	check_file(int fd, t_list *list)
 	}
 	// on check le dernier bloc, vu qu'on sort du while des que l'on arrive a la
 	// fin du fichier
-	if (check_piece((lst)->content) == EXIT_FAIL)
-		return (EXIT_FAIL);
+	if (check_piece((lst)->content) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	// si il y a une erreur du gnl ou que la piece fasse plus de 4 lignes => erreur
 	if (state == -1 || i > 4)
-		return (EXIT_FAIL);
+		return (EXIT_FAILURE);
 	return(EXIT_SUCCESS);
 }

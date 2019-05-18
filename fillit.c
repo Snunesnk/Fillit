@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:49:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/17 23:23:23 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/18 23:23:54 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,81 +19,71 @@ char	**size_square(int side)
 	char **square;
 
 	i = 0;
-	if(!(square = (char **)ft_memalloc(sizeof(*square) * side)))
+	if(!(square = (char **)ft_memalloc(sizeof(*square) * side + 1)))
 		return (NULL);
-	while (i < side && square[i])
+	while (i < side)
 	{
 		j = 0;
-		if (!(square[i] = (char *)ft_memalloc(sizeof(char) * side)))
+		if (!(square[i] = (char *)ft_memalloc(sizeof(char) * side + 1)))
 		{
 			while (i)
 				free(square[i]);
 			free(square);
 		}
-		while (j < side && square[i][j])
+		while (j < side)
 		{
 			square[i][j] = '.';
 			++j;
 		}
 		++i;
 	}
-	i = 0;
-	while (square[i])
-	{
-		printf("%s\n", square[i]);
-		i++;
-	}
 	return (square);
 }
 
-int		recursive_fill(char **square, t_list *lst)
+void	print_map(char **map)
 {
-	t_list	*first;
-	int		i;
-	int try;
+	int y;
 
-	i = 0;
-	try = 0;
-	first = lst;
-	if (!lst)
-		return (1);
-	printf("entree recursive\n");
-	while (find_space(square, (t_piece*)(lst->content), try))
+	y = 0;
+	while (map[y])
 	{
-		printf("ca a trouve de l'espace\n");
-		if (recursive_fill(square, lst->next))
-			return (1);
-		++try;
+		printf("%s\n", map[y]);
+		y++;
 	}
-	return (0);
 }
 
 int		ft_fillit(t_list *lst)
 {
-	int		max_map;
-	int		min_map;
-	char	**square;
+	char	**map;
 	int		i;
+	int try;
+	t_list *first;
+	int result;
 
-	i  = 2;
-	min_map = ft_sqrt(i * 4);
-	max_map = 2 * ft_sqrt(i) + 2;
-	square = size_square(min_map);
-	printf("entree fillit\n");
-	while (!recursive_fill(square, lst))
+	first = lst;
+	result = 0;
+	try = 0;
+	i = ft_sqrt(ft_lst_length(lst)) * 4;
+	map = size_square(i);
+	printf("avant le while\n");
+	while (lst)
 	{
-		printf("la recursive a renvoyee 0\n");
-		i++;
-		free(square);
-		if(!(square = size_square(i)))
-			return (EXIT_FAIL);
+		printf("dans le while\n");
+		result = find_space(map, (t_piece *)(lst->content), try);
+		if (result == -2)
+		{
+			++i;
+			free(map);
+			lst = first;
+			map = size_square(i);
+			try = 0;
+		}
+		else if (result == EXIT_FAILURE)
+			try++;
+		else
+			lst = lst->next;
 	}
-	i = 0;
-	while (square[i])
-	{
-		printf("%s\n", square[i]);
-		i++;
-	}
-	printf("cote du carre = %d\n", i);
+	printf("map finale :\n");
+	print_map(map);
 	return (EXIT_SUCCESS);
 }
