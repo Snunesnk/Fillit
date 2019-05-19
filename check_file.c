@@ -37,91 +37,59 @@ int		count_contact(char tab[5][5], int y, int x)
 // verifie que chaque piece recue soit valide
 int	check_piece(t_piece *piece)
 {
-	// compte le nombre de block trouve
 	int block;
-	// ligne actuellement lue
 	int y;
-	// position sur cette ligne
 	int x;
 	int contact;
 
 	contact = 0;
 	block = 0;
 	y = -1;
-	// tant que l'on a pas parcourue toutes les lignes de la piece
-	while (y++ < 3)
+	while (piece->tab[++y][0])
 	{
 		x = -1;
-		// tant que l'on a pas atteint le bout de la ligne
 		while (x++ < 3)
 		{
 			if (piece->tab[y][x] == '#') //si on trouve un '#'
 			{
 				++block;
-				// on ne checke qu'a partir du deuxieme block trouve,
-				//sinon il n'y aura aucun cote commun pour le premier
 				contact = contact + count_contact(piece->tab, y, x);
 			}
-			// si le caractere lu n'est ni un '#' ni un '.'
 			else if (piece->tab[y][x] != '.')
 				return(EXIT_FAILURE);
 		}
 	}
-	//printf("contact total = %d\n", contact);
-	if (contact != 6 && contact != 8)
+	if ((contact != 6 && contact != 8) || (block != 0 && block != 4))
 		return (EXIT_FAILURE);
-	if (block == 0)
-		return (EXIT_SUCCESS);
-	return (block == 4 ? EXIT_SUCCESS : EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
-int	check_file(int fd, t_list *list)
+int	check_file(int fd, t_list *lst)
 {
-	// contient la ligne lue
 	char	*line;
 	int		i;
 	int		state;
-	t_list	*lst;
 
 	line = NULL;
 	i = 0;
-	lst = list;
-	// tant que le gnl ne renvoie pas d'erreur, que la piece lue n'ai pas plus
-	// de 4 lignes et qu la lecture du fichier n'est pas terminee, on lit l'entree
-	while ((state = get_next_line(fd, &line)) > 0 && i <= 4)
+	while ((state = get_next_line(fd, &line)) > 0)
 	{
-		// on stocke la ligne lue avec strlcat pour eviter les debordements
-		ft_strlcat(((t_piece*)((lst)->content))->tab[i], line, 6);
-		// line ne sert plus, et elle n'est pas free dans le get_next_line
-		// donc on evite les fuites
+		if (ft_strlen(line) == 4)
+			ft_strcpy(((t_piece *)(lst->content))->tab[i], line);
 		free(line);
-		// si la ligne lue ne contient pas 4 caractere et que ce n'est pas une transition
-		if (ft_strlen(((t_piece*)((lst)->content))->tab[i]) != 4 && ((t_piece*)((lst)->content))->tab[i][0])
-			return (EXIT_FAILURE);
-		// Si la ligne est vide, c'est surement une transition => '\n' entre deux pieces
-		if (!(((t_piece*)((lst)->content))->tab[i][0]))
+		if (i == 4)
 		{
-			// Si transition, on a lu une piece complete, donc on la verifie
-			// Si ce n'est pas une transition mais une ligne vide dans le piece,
-			// la fonction le detectera.
-			if (check_piece((t_piece*)(lst->content)) == EXIT_FAILURE)
+			if (check_piece((t_piece *)(lst->content)) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
-			// c'est bien une transition entre deux pieces, donc on ajoute un maillon
-			// dans la liste qui va stocker la piece suivante
-			if(!((lst)->next = ft_lstnew(new_piece(), sizeof(t_piece))))
+			printf("piece verifiee\n");
+			if (!(lst->next = ft_lstnew(new_piece(), sizeof(t_piece *))))
 				return (EXIT_FAILURE);
-			//on avance dans la liste
-			lst = (lst)->next;
+			lst = lst->next;
 			i = -1;
 		}
 		++i;
 	}
-	// on check le dernier bloc, vu qu'on sort du while des que l'on arrive a la
-	// fin du fichier
-	if (check_piece((lst)->content) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	// si il y a une erreur du gnl ou que la piece fasse plus de 4 lignes => erreur
-	if (state == -1 || i > 4)
+	if (check_piece((lst)->content) == EXIT_FAILURE || state == -1)
 		return (EXIT_FAILURE);
 	return(EXIT_SUCCESS);
 }

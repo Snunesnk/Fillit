@@ -23,10 +23,8 @@ int		ft_error(void)
 // alloue de la memoire pour stocker une nouvelle piece
 t_piece	*new_piece(void)
 {
-	int i;
 	t_piece	*new_piece;
 
-	i = 0;
 	// allocation de memoire pour stocker un tableau
 	new_piece = (t_piece*)ft_memalloc(sizeof(t_piece));
 	if (!new_piece)

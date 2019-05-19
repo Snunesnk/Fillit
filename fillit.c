@@ -63,23 +63,26 @@ int		ft_fillit(t_list *lst)
 	first = lst;
 	result = 0;
 	try = 0;
-	i = ft_sqrt(ft_lst_length(lst)) * 4;
+	i = ft_sqrt(ft_lst_length(lst) * 4) + 1;
 	map = size_square(i);
-	printf("avant le while\n");
 	while (lst)
 	{
-		printf("dans le while\n");
+		printf("map actuelle :\n");
+		print_map(map);
 		result = find_space(map, (t_piece *)(lst->content), try);
 		if (result == -2)
 		{
 			++i;
-			free(map);
-			lst = first;
-			map = size_square(i);
 			try = 0;
 		}
 		else if (result == EXIT_FAILURE)
+		{
+			lst = first;
+			free(map);
+			map = size_square(i);
 			try++;
+			printf("try passe a %d\n", try);
+		}
 		else
 			lst = lst->next;
 	}
