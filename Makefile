@@ -6,14 +6,14 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/18 14:46:40 by snunes           ###   ########.fr        #
+#    Updated: 2019/05/20 21:32:04 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = fillit
 SRC_PATH = .
-SRC_NAME = main.c check_file.c fillit.c valid_place.c
+SRC_NAME = main.c check_file.c fillit.c algo.c
 OBJ_PATH = obj
 I_PATH = include
 HEADER_NAME = fillit.h

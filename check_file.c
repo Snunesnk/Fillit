@@ -6,30 +6,85 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/18 21:44:05 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/20 21:30:30 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
+void	clean_tab(char tab[5][5])
+{
+	int y;
+	int x;
+
+	y = 0;
+	x = 0;
+	while (y < 4)
+	{
+		++x;
+		if (x == 4)
+		{
+			++y;
+			x = 0;
+		}
+		if (tab[y][x] == '#')
+			tab[y][x] = '.';
+	}
+}
+int		arrange_piece(t_piece *piece, int x, int y)
+{
+	if (x == 4)
+	{
+		x = 0;
+		++y;
+		if (y > 3)
+		{
+			clean_tab(piece->tab);
+			return (EXIT_SUCCESS);
+		}
+	}
+	if (piece->tab[y][x] == '#')
+	{
+		if (y - piece->y_first >= 0 && x - piece->x_first >= 0)
+		{
+			if (arrange_piece(piece, x + 1, y) == EXIT_SUCCESS)
+			{
+				piece->tab[y - piece->y_first][x - piece->x_first] = '#';
+				return (EXIT_SUCCESS);
+			}
+			else
+			{
+				piece->x_first -= 1;
+				return (arrange_piece(piece, x, y));
+			}
+		}
+		else
+			return (EXIT_FAILURE);
+	}
+	return (arrange_piece(piece, x + 1, y));
+}
 // verifie que chaque bloc possede un cote commun avec un autre bloc
-int		count_contact(char tab[5][5], int y, int x)
+int		count_contact(t_piece *piece, int y, int x, int block)
 {
 	int contact;
 
 	contact = 0;
-	// verifie qu'il n'y ait pas plus de 4 blocs
+	if (block == 1)
+	{
+		piece->y_first = y;
+		piece->x_first = x;
+	}
 	//check si il y a un bloc en haut
-	if (y - 1 >= 0 && tab[y - 1][x] == '#')
+	if (y - 1 >= 0 && piece->tab[y - 1][x] == '#')
 		++contact;
 	//check si il y a un bloc a gauche
-	if (x - 1 >= 0 && tab[y][x - 1] == '#')
+	if (x - 1 >= 0 && piece->tab[y][x - 1] == '#')
 		++contact;
 	//check si il y a un bloc a droite
-	if (x + 1 < 4 && tab[y][x + 1] == '#')
+	if (x + 1 < 4 && piece->tab[y][x + 1] == '#')
 		++contact;
 	// check block en bas
-	if (y + 1 < 4 && tab[y + 1][x] == '#')
+	if (y + 1 < 4 && piece->tab[y + 1][x] == '#')
 		++contact;
 	return (contact);
 }
@@ -53,7 +108,7 @@ int	check_piece(t_piece *piece)
 			if (piece->tab[y][x] == '#') //si on trouve un '#'
 			{
 				++block;
-				contact = contact + count_contact(piece->tab, y, x);
+				contact = contact + count_contact(piece, y, x, block);
 			}
 			else if (piece->tab[y][x] != '.')
 				return(EXIT_FAILURE);
@@ -61,6 +116,7 @@ int	check_piece(t_piece *piece)
 	}
 	if ((contact != 6 && contact != 8) || (block != 0 && block != 4))
 		return (EXIT_FAILURE);
+	arrange_piece(piece, 0, 0);
 	return (EXIT_SUCCESS);
 }
 
@@ -81,7 +137,6 @@ int	check_file(int fd, t_list *lst)
 		{
 			if (check_piece((t_piece *)(lst->content)) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
-			printf("piece verifiee\n");
 			if (!(lst->next = ft_lstnew(new_piece(), sizeof(t_piece *))))
 				return (EXIT_FAILURE);
 			lst = lst->next;
