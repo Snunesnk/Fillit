@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/20 21:30:30 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/21 18:39:52 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int		arrange_piece(t_piece *piece, int x, int y)
 	}
 	return (arrange_piece(piece, x + 1, y));
 }
-// verifie que chaque bloc possede un cote commun avec un autre bloc
 int		count_contact(t_piece *piece, int y, int x, int block)
 {
 	int contact;
@@ -74,22 +73,17 @@ int		count_contact(t_piece *piece, int y, int x, int block)
 		piece->y_first = y;
 		piece->x_first = x;
 	}
-	//check si il y a un bloc en haut
 	if (y - 1 >= 0 && piece->tab[y - 1][x] == '#')
 		++contact;
-	//check si il y a un bloc a gauche
 	if (x - 1 >= 0 && piece->tab[y][x - 1] == '#')
 		++contact;
-	//check si il y a un bloc a droite
 	if (x + 1 < 4 && piece->tab[y][x + 1] == '#')
 		++contact;
-	// check block en bas
 	if (y + 1 < 4 && piece->tab[y + 1][x] == '#')
 		++contact;
 	return (contact);
 }
 
-// verifie que chaque piece recue soit valide
 int	check_piece(t_piece *piece)
 {
 	int block;
