@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:49:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/21 18:39:56 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/22 22:25:28 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int		recursive(t_list *lst, char **map, int length, int side)
 
 	if (!lst)
 		return (EXIT_SUCCESS);
-	while ((res = find_space(map, (t_piece *)(lst->content))) != -2)
+	while ((res = find_space(map, (t_piece *)(lst->content))) != -2 || map[0][6] == 'A')
 	{
 		if (res == EXIT_SUCCESS)
 		{
@@ -108,12 +108,10 @@ int		ft_fillit(t_list *lst)
 	int length;
 
 	length = ft_lst_length(lst);
-	result = 0;
 	i = ft_sqrt(length * 4);
 	map = size_square(i);
 	while ((result = recursive(lst, map, length, i)) != EXIT_SUCCESS)
 	{
-		printf("\n\n\n\n\n\n RESIZE DE LA MAP!\n\n\n\n\n\n\n");
 		++i;
 		free(map);
 		map = size_square(i);
