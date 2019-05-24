@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 19:10:06 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 16:54:38 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 19:06:12 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_dot(char **map, int mode, int x, int y)
 			if (map[y][x] == '1' && mode == 4)
 				map[y][x] = '.';
 			else if (map[y][x] == '.' && mode == 1)
-					return (y * 20 + x);
+				return (y * 20 + x);
 			++x;
 		}
 		x = 0;
@@ -85,7 +85,7 @@ int		find_space(char **map, t_piece *tet, int **pos)
 		return (i);
 	x = i % 20;
 	y = (i - x) / 20;
-	i = ft_putpiece(map, tet->tab,  x, y);
+	i = ft_putpiece(map, tet->tab, x, y);
 	pos[tet->nb][1] = (map[y][x + 1] == '\0') ? 0 : x + 1;
 	pos[tet->nb][2] = (pos[tet->nb][1] == 0) ? y + 1 : y;
 	if (i == EXIT_FAILURE)

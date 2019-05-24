@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 19:07:48 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 15:46:27 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 19:39:32 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ typedef	struct	s_piece
 
 typedef	struct	s_list
 {
-		void		*content;
-		size_t			content_size;
-		struct s_list	*next;
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
 }				t_list;
 
 int				ft_sqrt(int nb);

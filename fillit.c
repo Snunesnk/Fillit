@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:49:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 16:54:34 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 19:12:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 char	**size_square(int side)
 {
-	int	i;
-	int j;
-	char **square;
+	int		i;
+	int		j;
+	char	**square;
 
 	i = 0;
-	if(!(square = (char **)ft_memalloc(sizeof(*square) * side + 1)))
+	if (!(square = (char **)ft_memalloc(sizeof(*square) * side + 1)))
 		return (NULL);
 	while (i < side)
 	{
@@ -53,7 +53,7 @@ void	order_map(char **map, t_list *lst, int length, int mode)
 		if (map[y][x] == '1' && mode == 1)
 			map[y][x] = 'A' + length - ft_lst_length(lst);
 		else if (map[y][x] == 'A' + length - ft_lst_length(lst) && mode == 2)
-				map[y][x] = '.';
+			map[y][x] = '.';
 		++x;
 		if (!map[y][x])
 		{
@@ -62,7 +62,6 @@ void	order_map(char **map, t_list *lst, int length, int mode)
 		}
 	}
 }
-
 
 void	clear(int **coord, int i, int length)
 {
@@ -114,7 +113,7 @@ int		ft_fillit(t_list *lst, int **coord)
 {
 	char	**map;
 	int		i;
-	int length;
+	int		length;
 
 	length = ft_lst_length(lst);
 	i = ft_sqrt(length * 4);

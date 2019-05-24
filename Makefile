@@ -6,7 +6,7 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/20 21:32:04 by snunes           ###   ########.fr        #
+#    Updated: 2019/05/24 19:01:38 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,9 @@ HEADER = $(addprefix $(I_PATH)/,$(HEADER_NAME))
 
 ## all		: compile et cree l'executable
 all : $(NAME)
-	@cd libft && make
 
 $(NAME) : $(OBJ)
+	@cd libft && make
 	$(CC) $(CCFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 ## objet		: verifie que les objets et le header soient a jour
@@ -43,13 +43,17 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c $(HEADER)
 clean :
 	@rm -fv $(OBJ)
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
+	@cd libft && make clean
 
 ## fclean		: efface les binaires ainsi que l'executable
 fclean : clean
 	@rm -fv $(NAME)
+	@rm -fv libft/libft.a
+	@cd libft && make fclean
 
 ## re		: lance la regle "fclean", puis la regle "all"
 re : fclean all
+	@cd libft && make re
 
 ## norme		: verifie la norme du projet
 norme :

@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 16:54:36 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 19:33:41 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,15 @@ void	clean_tab(char tab[5][5])
 			tab[y][x] = '.';
 	}
 }
+
 int		arrange_piece(t_piece *piece, int x, int y)
 {
-	if (x == 4)
+	y = (x == 4) ? y + 1 : y;
+	x = (x == 4) ? 0 : x;
+	if (y == 4)
 	{
-		x = 0;
-		if (y++ > 3)
-		{
-			clean_tab(piece->tab);
-			return (EXIT_SUCCESS);
-		}
+		clean_tab(piece->tab);
+		return (EXIT_SUCCESS);
 	}
 	if (piece->tab[y][x] == '#')
 	{
@@ -57,11 +56,11 @@ int		arrange_piece(t_piece *piece, int x, int y)
 				return (arrange_piece(piece, x, y));
 			}
 		}
-		else
-			return (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	return (arrange_piece(piece, x + 1, y));
 }
+
 int		count_contact(t_piece *piece, int y, int x, int block)
 {
 	int contact;
@@ -83,7 +82,7 @@ int		count_contact(t_piece *piece, int y, int x, int block)
 	return (contact);
 }
 
-int	check_piece(t_piece *piece)
+int		check_piece(t_piece *piece)
 {
 	int block;
 	int y;
@@ -98,22 +97,21 @@ int	check_piece(t_piece *piece)
 		x = -1;
 		while (x++ < 3)
 		{
-			if (piece->tab[y][x] == '#') //si on trouve un '#'
+			if (piece->tab[y][x] == '#')
 			{
 				++block;
 				contact = contact + count_contact(piece, y, x, block);
 			}
 			else if (piece->tab[y][x] != '.')
-				return(EXIT_FAILURE);
+				return (EXIT_FAILURE);
 		}
 	}
 	if ((contact != 6 && contact != 8) || (block != 0 && block != 4))
 		return (EXIT_FAILURE);
-	arrange_piece(piece, 0, 0);
-	return (EXIT_SUCCESS);
+	return (arrange_piece(piece, 0, 0));
 }
 
-int	check_file(int fd, t_list *lst)
+int		check_file(int fd, t_list *lst)
 {
 	char	*line;
 	int		i;
@@ -139,5 +137,5 @@ int	check_file(int fd, t_list *lst)
 	}
 	if (check_piece((lst)->content) == EXIT_FAILURE || state == -1)
 		return (EXIT_FAILURE);
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

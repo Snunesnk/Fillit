@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 16:54:32 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 19:19:01 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int		ft_comp(int **coord, t_piece *tet, t_list *first)
 
 int		**define_type(t_list *lst)
 {
-	int i;
-	int **coord;
-	t_list *first;
+	int		i;
+	int		**coord;
+	t_list	*first;
 
 	first = lst;
 	i = 0;
@@ -86,7 +86,7 @@ int		main(int argc, char **argv)
 	int		fd;
 	t_list	lst;
 	int		state;
-	int 	**coord;
+	int		**coord;
 
 	if (argc != 2)
 	{
@@ -97,9 +97,9 @@ int		main(int argc, char **argv)
 		return (ft_error());
 	if (!(lst.content = new_piece(&lst)))
 		return (ft_error());
- 	fd = open(argv[1], O_RDONLY);
+	fd = open(argv[1], O_RDONLY);
 	if (check_file(fd, &lst) == EXIT_FAILURE)
-		return(ft_error());
+		return (ft_error());
 	close(fd);
 	coord = define_type(&lst);
 	state = ft_fillit(&lst, coord);
