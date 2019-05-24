@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/22 22:25:26 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 16:54:36 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ int		arrange_piece(t_piece *piece, int x, int y)
 	if (x == 4)
 	{
 		x = 0;
-		++y;
-		if (y > 3)
+		if (y++ > 3)
 		{
 			clean_tab(piece->tab);
 			return (EXIT_SUCCESS);
@@ -131,7 +130,7 @@ int	check_file(int fd, t_list *lst)
 		{
 			if (check_piece((t_piece *)(lst->content)) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
-			if (!(lst->next = ft_lstnew(new_piece(), sizeof(t_piece *))))
+			if (!(lst->next = ft_lstnew(new_piece(lst), sizeof(t_piece *))))
 				return (EXIT_FAILURE);
 			lst = lst->next;
 			i = -1;

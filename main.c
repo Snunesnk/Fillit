@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/22 22:31:38 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 16:54:32 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,92 +18,67 @@ int		ft_error(void)
 	return (0);
 }
 
-t_piece	*new_piece(void)
+t_piece	*new_piece(t_list *lst)
 {
 	t_piece	*new_piece;
 
 	new_piece = (t_piece*)ft_memalloc(sizeof(t_piece));
 	if (!new_piece)
 		return (NULL);
-	new_piece->type = 0;
+	new_piece->nb = ft_lst_length(lst);
+	new_piece->y_size = 0;
 	return (new_piece);
 }
 
-void	print_piece(t_list *lst)
-{
-	int i;
-
-	while (lst)
-	{
-		i = 0;
-		printf("type de cette piece : %d\n", ((t_piece *)(lst->content))->type);
-		while (i < 4)
-		{
-			printf("|%s|\n", ((t_piece*)(lst->content))->tab[i]);
-			i++;
-		}
-		lst = lst->next;
-	}
-}
-
-void	print_map(char **map)
+int		ft_comp(int **coord, t_piece *tet, t_list *first)
 {
 	int y;
-	int len;
 
-	len = ft_strlen(map[0]);
-	y = 0;
-	while (y < len)
+	while (tet->nb != ((t_piece *)(first->content))->nb)
 	{
-		write(1, map[y], len);
-		write(1, "\n", 1);
-		y++;	
-	}
-}
-
-int		ft_compare(t_piece *piece, t_list *lst, int *i)
-{
-	int y;
-	int equ;
-
-	while (lst)
-	{
-		equ = 1;
 		y = 0;
-		while (y != 4 && equ)
+		while (ft_strequ(tet->tab[y], ((t_piece *)(first->content))->tab[y]))
 		{
-			equ = ft_strequ(piece->tab[y], ((t_piece *)(lst->content))->tab[y]);
-			y++;
-		}
-		if (equ || !lst)
-		{
-			if (((t_piece *)(lst->content))->type != 0)
-				piece->type = ((t_piece *)(lst->content))->type;
-			else
+			++y;
+			if (y == 4)
 			{
-				*i = *i + 1;
-				piece->type = *i;
+				coord[tet->nb][0] = ((t_piece *)(first->content))->nb;
+				return (1);
 			}
-			return (EXIT_SUCCESS);
 		}
-		lst = lst->next;
+		first = first->next;
 	}
-	return (EXIT_SUCCESS);
+	coord[tet->nb][0] = tet->nb;
+	return (1);
 }
 
-int		define_type(t_list *lst)
+int		**define_type(t_list *lst)
 {
-	t_list *first;
 	int i;
+	int **coord;
+	t_list *first;
 
-	i = 0;
 	first = lst;
+	i = 0;
 	while (lst)
 	{
-		ft_compare(((t_piece *)(lst->content)), first, &i);
+		++i;
+		((t_piece *)(lst->content))->nb = i;
 		lst = lst->next;
 	}
-	return (i);
+	coord = (int **)ft_memalloc(sizeof(*coord) * i + 2);
+	while (i > 0)
+	{
+		coord[i] = (int *)ft_memalloc(sizeof(**coord) * 3);
+		--i;
+	}
+	lst = first;
+	while (lst)
+	{
+		ft_comp(coord, ((t_piece *)(lst->content)), first);
+		lst = lst->next;
+	}
+	return (coord);
 }
 
 int		main(int argc, char **argv)
@@ -111,7 +86,6 @@ int		main(int argc, char **argv)
 	int		fd;
 	t_list	lst;
 	int		state;
-	int		i;
 	int 	**coord;
 
 	if (argc != 2)
@@ -121,19 +95,13 @@ int		main(int argc, char **argv)
 	}
 	if (!argv[1])
 		return (ft_error());
-	if (!(lst.content = new_piece()))
+	if (!(lst.content = new_piece(&lst)))
 		return (ft_error());
  	fd = open(argv[1], O_RDONLY);
 	if (check_file(fd, &lst) == EXIT_FAILURE)
 		return(ft_error());
 	close(fd);
-	i = define_type(&lst);
-	coord = (int **)ft_memalloc(sizeof(*coord) * i + 1);
-	while (i > 0)
-	{
-		coord[i] = (int *)ft_memalloc(sizeof(**coord) * 3);
-		--i;
-	}
-	state = ft_fillit(&lst);
+	coord = define_type(&lst);
+	state = ft_fillit(&lst, coord);
 	return ((state == -1) ? ft_error() : 0);
 }

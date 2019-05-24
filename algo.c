@@ -6,37 +6,41 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 19:10:06 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/22 22:26:01 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 16:54:38 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int		ft_dot(char **map, int mode)
+void	print_map(char **map)
 {
-	int i;
-	int j;
+	int y;
+	int len;
 
-	j = 0;
-	while (map[j])
+	len = ft_strlen(map[0]);
+	y = 0;
+	while (y < len)
 	{
-		i = 0;
-		while (map[j][i])
+		write(1, map[y], len);
+		write(1, "\n", 1);
+		y++;
+	}
+}
+
+int		ft_dot(char **map, int mode, int x, int y)
+{
+	while (map[y])
+	{
+		while (map[y][x])
 		{
-			if (map[j][i] == '0' && mode == 2)
-				map[j][i] = '.';
-			else if (map[j][i] == '1' && mode == 4)
-				map[j][i] = '.';
-			else if (map[j][i] == '.' && mode == 1)
-					return (j * 20 + i);
-			else if (map[j][i] == '.' && mode == 3)
-			{
-				map[j][i] = '0';
-				return (EXIT_SUCCESS);
-			}
-			++i;
+			if (map[y][x] == '1' && mode == 4)
+				map[y][x] = '.';
+			else if (map[y][x] == '.' && mode == 1)
+					return (y * 20 + x);
+			++x;
 		}
-		++j;
+		x = 0;
+		++y;
 	}
 	return (-2);
 }
@@ -47,12 +51,9 @@ int		ft_putpiece(char **map, char tab[5][5], int retx, int rety)
 	int x;
 
 	y = 0;
-	x = 0;
-	while (tab[0][x] == '.')
-	{
-		++x;
+	x = -1;
+	while (tab[0][++x] == '.')
 		--retx;
-	}
 	if (retx < 0)
 		return (EXIT_FAILURE);
 	while (y != 4)
@@ -72,22 +73,25 @@ int		ft_putpiece(char **map, char tab[5][5], int retx, int rety)
 	return (EXIT_SUCCESS);
 }
 
-int		find_space(char **map, t_piece *piece)
+int		find_space(char **map, t_piece *tet, int **pos)
 {
 	int i;
 	int x;
 	int y;
 
-	if ((i = ft_dot(map, 1)) == -2)
-		return (-2);
+	x = pos[tet->nb][1];
+	y = pos[tet->nb][2];
+	if ((i = ft_dot(map, 1, x, y)) == -2)
+		return (i);
 	x = i % 20;
 	y = (i - x) / 20;
-	if (ft_putpiece(map, piece->tab,  x, y) == EXIT_FAILURE)
+	i = ft_putpiece(map, tet->tab,  x, y);
+	pos[tet->nb][1] = (map[y][x + 1] == '\0') ? 0 : x + 1;
+	pos[tet->nb][2] = (pos[tet->nb][1] == 0) ? y + 1 : y;
+	if (i == EXIT_FAILURE)
 	{
-		ft_dot(map, 4);
-		ft_dot(map, 3);
+		ft_dot(map, 4, x, y);
 		return (EXIT_FAILURE);
 	}
-	ft_dot(map, 2);
 	return (EXIT_SUCCESS);
 }

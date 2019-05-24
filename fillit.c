@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:49:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/22 22:25:28 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/24 16:54:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,15 @@ void	order_map(char **map, t_list *lst, int length, int mode)
 {
 	int y;
 	int x;
-	int first;
 
-	first = 0;
 	y = 0;
 	x = 0;
 	while (map[y])
 	{
 		if (map[y][x] == '1' && mode == 1)
 			map[y][x] = 'A' + length - ft_lst_length(lst);
-		else if ((map[y][x] == '9' && mode == 3))
-			map[y][x] = '.';
-		else if (map[y][x] == '.' && mode == 2 && first == 0)
-			map[y][x] = '9';
 		else if (map[y][x] == 'A' + length - ft_lst_length(lst) && mode == 2)
-		{
-			if (first == 0)
-			{
-				++first;
-				map[y][x] = '9';
-			}
-			else
 				map[y][x] = '.';
-		}
 		++x;
 		if (!map[y][x])
 		{
@@ -77,46 +63,69 @@ void	order_map(char **map, t_list *lst, int length, int mode)
 	}
 }
 
-int		recursive(t_list *lst, char **map, int length, int side)
+
+void	clear(int **coord, int i, int length)
+{
+	int		j;
+	int		ret;
+
+	ret = i;
+	j = 0;
+	while (j < length)
+	{
+		if (coord[i + j][0] == i + j)
+		{
+			coord[i + j][1] = 0;
+			coord[i + j][2] = 0;
+		}
+		else
+		{
+			ret = i - 1 + j;
+			while (coord[ret][0] != coord[i + j][0])
+				--ret;
+			coord[i + j][1] = coord[ret][1];
+			coord[i + j][2] = coord[ret][2];
+		}
+		++j;
+	}
+}
+
+int		recursive(t_list *lst, char **map, int **coord, int length)
 {
 	int res;
 
 	if (!lst)
 		return (EXIT_SUCCESS);
-	while ((res = find_space(map, (t_piece *)(lst->content))) != -2 || map[0][6] == 'A')
+	clear(coord, ((t_piece *)(lst->content))->nb, 1);
+	while ((res = find_space(map, ((t_piece *)(lst->content)), coord)) != -2)
 	{
 		if (res == EXIT_SUCCESS)
 		{
-			order_map(map, lst, length, 3);
 			order_map(map, lst, length, 1);
-			if ((res = recursive(lst->next, map, length, side)) == EXIT_SUCCESS)
+			if (recursive(lst->next, map, coord, length) == EXIT_SUCCESS)
 				return (EXIT_SUCCESS);
-			ft_dot(map, 2);
-			order_map(map, lst, length, 2);
 		}
 	}
-	ft_dot(map, 2);
-	order_map(map, lst, length, 3);
+	order_map(map, lst, length - 1, 2);
 	return (EXIT_FAILURE);
 }
 
-int		ft_fillit(t_list *lst)
+int		ft_fillit(t_list *lst, int **coord)
 {
 	char	**map;
 	int		i;
-	int result;
 	int length;
 
 	length = ft_lst_length(lst);
 	i = ft_sqrt(length * 4);
 	map = size_square(i);
-	while ((result = recursive(lst, map, length, i)) != EXIT_SUCCESS)
+	while (recursive(lst, map, coord, length) != EXIT_SUCCESS)
 	{
+		clear(coord, 1, length);
 		++i;
 		free(map);
 		map = size_square(i);
 	}
-	printf("map finale :\n");
 	print_map(map);
 	return (EXIT_SUCCESS);
 }
