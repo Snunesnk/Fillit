@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 19:33:41 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/25 16:06:24 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void	clean_tab(char tab[5][5])
 	x = 0;
 	while (y < 4)
 	{
+		if (tab[y][x] == '#')
+			tab[y][x] = '.';
 		++x;
 		if (x == 4)
 		{
 			++y;
 			x = 0;
 		}
-		if (tab[y][x] == '#')
-			tab[y][x] = '.';
 	}
 }
 
@@ -128,13 +128,15 @@ int		check_file(int fd, t_list *lst)
 		{
 			if (check_piece((t_piece *)(lst->content)) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
-			if (!(lst->next = ft_lstnew(new_piece(lst), sizeof(t_piece *))))
+			if (!(lst->next = ft_lstnew(NULL, sizeof(t_piece *)))
+					|| !(lst->next->content = new_piece(lst)))
 				return (EXIT_FAILURE);
 			lst = lst->next;
 			i = -1;
 		}
 		++i;
 	}
+	free(line);
 	if (check_piece((lst)->content) == EXIT_FAILURE || state == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
