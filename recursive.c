@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 14:49:53 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 15:31:38 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/25 20:23:29 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,15 @@ int		ft_fillit(t_list *lst, int **coord)
 
 	length = ft_lst_length(lst);
 	i = ft_sqrt(length * 4);
-	map = size_square(i);
+	if (!(map = size_square(i)))
+		return (EXIT_FAILURE);
 	while (recursive(lst, map, coord, length) != EXIT_SUCCESS)
 	{
 		clear(coord, 1, length);
 		++i;
 		free_map(map);
-		map = size_square(i);
+		if (!(map = size_square(i)))
+			return (EXIT_FAILURE);
 	}
 	print_map(map);
 	free_map(map);

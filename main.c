@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 16:07:22 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/25 19:58:33 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,12 @@ int		**define_type(t_list *lst)
 		((t_piece *)(lst->content))->nb = i;
 		lst = lst->next;
 	}
-	coord = (int **)ft_memalloc(sizeof(int *) * (i + 1));
+	if (!(coord = (int **)ft_memalloc(sizeof(int *) * (i + 1))))
+			return (NULL);
 	while (i >= 0 && coord)
 	{
-		coord[i] = (int *)ft_memalloc(sizeof(int) * 3);
+		if (!(coord[i] = (int *)ft_memalloc(sizeof(int) * 3)))
+			return (NULL);
 		--i;
 	}
 	lst = first;
@@ -94,6 +96,7 @@ int		main(int argc, char **argv)
 	int		**coord;
 
 	lst.next = NULL;
+	coord = NULL;
 	if (argc != 2)
 	{
 		write(1, "usage: ./fillit Tetriminos_file\n", 33);
@@ -108,8 +111,9 @@ int		main(int argc, char **argv)
 		return (ft_error(&lst, NULL));
 	close(fd);
 	if (!(coord = define_type(&lst)))
-			return (ft_error(&lst, NULL));
-	ft_fillit(&lst, coord);
+			return (ft_error(&lst, coord));
+	if (ft_fillit(&lst, coord) == EXIT_FAILURE)
+		return (ft_error(&lst, coord));
 	free(lst.content);
 	free_mem(lst.next, coord);
 	return (0);

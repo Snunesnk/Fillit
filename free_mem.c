@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 13:09:12 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 16:07:24 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/25 19:40:20 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,14 @@ void	free_map(char **map)
 void	free_mem(t_list *lst, int **coord)
 {
 	int i;
-	int length;
 
-	length = ft_lst_length(lst) + 1;
-	i = 0;
+	i = ft_lst_length(lst) + 1;
 	if (*coord)
 	{
-		while (i <= length || i == 0)
+		while (i >= 0 && coord[i] != NULL)
 		{
 			free(coord[i]);
-			i++;
+			i--;
 		}
 		free(coord);
 	}
