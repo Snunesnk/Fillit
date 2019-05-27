@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 16:06:24 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/27 14:00:34 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,17 +124,15 @@ int		check_file(int fd, t_list *lst)
 		if (ft_strlen(line) == 4)
 			ft_strcpy(((t_piece *)(lst->content))->tab[i], line);
 		free(line);
-		if (i == 4)
+		if (i++ == 4)
 		{
-			if (check_piece((t_piece *)(lst->content)) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
-			if (!(lst->next = ft_lstnew(NULL, sizeof(t_piece *)))
+			if (check_piece((t_piece *)(lst->content)) == EXIT_FAILURE
+					|| !(lst->next = ft_lstnew(NULL, 0))
 					|| !(lst->next->content = new_piece(lst)))
 				return (EXIT_FAILURE);
 			lst = lst->next;
-			i = -1;
+			i = 0;
 		}
-		++i;
 	}
 	free(line);
 	if (check_piece((lst)->content) == EXIT_FAILURE || state == -1)

@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 19:58:33 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/27 13:44:45 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int		ft_error(t_list *lst, int **coord)
 {
+	write(1, "error\n", 6);
 	if (lst->next)
 		free_mem(lst, coord);
 	else
 		free(lst->content);
-	write(1, "error\n", 6);
 	return (0);
 }
 
@@ -68,17 +68,15 @@ int		**define_type(t_list *lst)
 	i = 0;
 	while (lst)
 	{
-		++i;
-		((t_piece *)(lst->content))->nb = i;
+		((t_piece *)(lst->content))->nb = ++i;
 		lst = lst->next;
 	}
 	if (!(coord = (int **)ft_memalloc(sizeof(int *) * (i + 1))))
-			return (NULL);
+		return (NULL);
 	while (i >= 0 && coord)
 	{
-		if (!(coord[i] = (int *)ft_memalloc(sizeof(int) * 3)))
+		if (!(coord[i--] = (int *)ft_memalloc(sizeof(int) * 3)))
 			return (NULL);
-		--i;
 	}
 	lst = first;
 	while (lst && coord)
@@ -110,9 +108,7 @@ int		main(int argc, char **argv)
 	if (check_file(fd, &lst) == EXIT_FAILURE)
 		return (ft_error(&lst, NULL));
 	close(fd);
-	if (!(coord = define_type(&lst)))
-			return (ft_error(&lst, coord));
-	if (ft_fillit(&lst, coord) == EXIT_FAILURE)
+	if (!(coord = define_type(&lst)) || ft_fillit(&lst, coord) == EXIT_FAILURE)
 		return (ft_error(&lst, coord));
 	free(lst.content);
 	free_mem(lst.next, coord);
