@@ -6,7 +6,7 @@
 /*   By: snunes <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 13:09:12 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 19:40:20 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/31 15:31:08 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	free_mem(t_list *lst, int **coord)
 	int i;
 
 	i = ft_lst_length(lst) + 1;
-	if (*coord)
+	if (coord)
 	{
 		while (i >= 0 && coord[i] != NULL)
 		{

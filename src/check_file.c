@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/30 14:27:01 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/31 15:17:47 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int		check_file(int fd, t_list *lst)
 		}
 	}
 	free(line);
-	if (check_piece((lst)->content) == EXIT_FAILURE || state == -1)
+	if (check_piece((lst)->content) == EXIT_FAILURE || state == -1 || i != 4)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

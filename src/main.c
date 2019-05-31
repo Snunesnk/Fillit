@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:43:11 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/30 14:26:59 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/31 15:32:41 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@
 int		ft_error(t_list *lst, int **coord)
 {
 	write(1, "error\n", 6);
-	if (lst->next)
+	if (lst->next && coord)
 		free_mem(lst, coord);
 	else
-		free(lst->content);
+	{
+		while (lst)
+		{
+			free(lst->content);
+			lst = lst->next;
+		}
+	}
 	return (0);
 }
 
