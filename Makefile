@@ -6,13 +6,13 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/25 14:03:47 by snunes           ###   ########.fr        #
+#    Updated: 2019/05/31 13:00:24 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = fillit
-SRC_PATH = .
+SRC_PATH = src
 SRC_NAME = main.c check_file.c recursive.c algo.c free_mem.c
 OBJ_PATH = obj
 I_PATH = include
@@ -20,7 +20,7 @@ HEADER_NAME = fillit.h
 LDFLAGS = -Llibft
 LDLIBS = -lft
 OBJ_NAME = $(SRC_NAME:%.c=%.o)
-CCFLAGS = -Wall -Wextra -Werror -g
+CCFLAGS = -Wall -Wextra -Werror
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 HEADER = $(addprefix $(I_PATH)/,$(HEADER_NAME))

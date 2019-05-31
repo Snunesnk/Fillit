@@ -6,13 +6,13 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/18 14:29:28 by snunes           ###   ########.fr        #
+#    Updated: 2019/05/31 13:01:31 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = libft.a
-SRC_PATH = .
+SRC_PATH = src
 SRC_NAME = ft_putchar.c ft_putstr.c ft_putchar_fd.c ft_putstr_fd.c ft_isdigit.c \
 		ft_isalpha.c ft_bzero.c ft_memalloc.c ft_memdel.c ft_strlen.c \
 		ft_strnew.c ft_strcat.c ft_strcpy.c ft_strsub.c ft_atoi.c ft_putnbr.c \

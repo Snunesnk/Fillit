@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 19:07:48 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/24 19:39:32 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/30 13:40:18 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 
 typedef	struct	s_piece
 {
-	int		y_size;
 	int		nb;
 	int		y_first;
 	int		x_first;
