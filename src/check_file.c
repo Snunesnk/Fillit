@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:38:19 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/31 15:17:47 by snunes           ###   ########.fr       */
+/*   Updated: 2019/05/31 16:07:21 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		check_piece(t_piece *piece)
 				return (EXIT_FAILURE);
 		}
 	}
-	if ((contact != 6 && contact != 8) || (block != 0 && block != 4))
+	if ((contact != 6 && contact != 8) || (block != 0 && block != 4) || y != 4)
 		return (EXIT_FAILURE);
 	return (arrange_piece(piece, 0, 0));
 }
@@ -119,10 +119,9 @@ int		check_file(int fd, t_list *lst)
 
 	line = NULL;
 	i = 0;
-	while ((state = get_next_line(fd, &line)) > 0)
+	while ((state = get_next_line(fd, &line)) > 0 && ft_strlen(line) <= 4)
 	{
-		if (ft_strlen(line) == 4)
-			ft_strcpy(((t_piece *)(lst->content))->tab[i], line);
+		ft_strcpy(((t_piece *)(lst->content))->tab[i], line);
 		free(line);
 		if (i++ == 4)
 		{
