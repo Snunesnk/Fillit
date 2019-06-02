@@ -6,7 +6,7 @@
 /*   By: snunes <snunes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:10 by snunes            #+#    #+#             */
-/*   Updated: 2019/05/25 14:22:43 by snunes           ###   ########.fr       */
+/*   Updated: 2019/06/02 14:50:23 by snunes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "../libft/include/libft.h"
-
-# define ABS(x) x > 0 ? x : -x
 
 void	free_map(char **map);
 void	free_mem(t_list *lst, int **coord);
