@@ -6,16 +6,16 @@
 #    By: snunes <snunes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 12:37:58 by snunes            #+#    #+#              #
-#    Updated: 2019/05/31 15:34:36 by snunes           ###   ########.fr        #
+#    Updated: 2019/06/05 20:51:27 by snunes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 NAME = fillit
-SRC_PATH = src
+SRC_PATH = .
 SRC_NAME = main.c check_file.c recursive.c algo.c free_mem.c
 OBJ_PATH = obj
-I_PATH = include
+I_PATH = ./
 HEADER_NAME = fillit.h
 LDFLAGS = -Llibft
 LDLIBS = -lft
